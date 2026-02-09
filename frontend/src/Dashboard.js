@@ -66,7 +66,7 @@ const Dashboard = () => {
   const [endDate, setEndDate] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
-  const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5001";
+  const API_BASE = "https://mga-connect.onrender.com";
 
   const fetchBookings = useCallback(async () => {
     try {
