@@ -1,0 +1,104 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./App.css";
+import { table, count } from "console";
+import { type } from "os";
+
+const StaffSummary = () => {
+  const [bookings, setBookings] = useState([]);
+  const [filteredBookings, setFilteredBookings] = useState([]);
+  const [staffName, setStaffName] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+
+  // Fetch all bookings
+  const fetchBookings = async () => {
+    try {
+      const res = await axios.get("http://localhost:5001/bookings");
+      setBookings(res.data);
+    } catch (err) {
+      console.error("Error fetching bookings:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  // Filter bookings when filters change
+  useEffect(() => {
+    let filtered = bookings;
+
+    // Filter by staff name if entered
+    if (staffName.trim() !== "") {
+      filtered = filtered.filter((b) =>
+        b.serviceBy?.toLowerCase().includes(staffName.toLowerCase())
+      );
+    }
+
+    // Filter by date/month if entered
+    if (dateFilter.trim() !== "") {
+      filtered = filtered.filter((b) => b.flightDate?.includes(dateFilter));
+    }
+
+    setFilteredBookings(filtered);
+  }, [staffName, dateFilter, bookings]);
+
+  // Count total services per staff
+  const staffCount = {};
+  filteredBookings.forEach((b) => {
+    if (b.serviceBy) {
+      staffCount[b.serviceBy] = (staffCount[b.serviceBy] || 0) + 1;
+    }
+  });
+
+  return (
+    <div className="summary-container">
+      <h2 className="summary-title">Staff-wise Service Summary</h2>
+
+      <div className="filters">
+        <input
+          type="text"
+          placeholder="Enter staff name"
+          value={staffName}
+          onChange={(e) => setStaffName(e.target.value)}
+        />
+        <input
+          type="month"
+          value={dateFilter}
+          onChange={(e) => setDateFilter(e.target.value)}
+        />
+      </div>
+
+      <table className="summary-table">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Service By</th>
+      <th>Code Name</th>
+      <th>Total Service</th>
+    </tr>
+  </thead>
+  <tbody>
+    {Object.keys(staffCount).length > 0 ? (
+      Object.entries(staffCount).map(([staff, count], index) => (
+        <tr key={staff}>
+          <td>{index + 1}</td>
+          <td>{staff}</td>
+          <td>-</td>
+          <td>{count}</td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td colSpan="4" style={{ textAlign: "center" }}>
+          No Records Found!
+        </td>
+      </tr>
+    )}
+  </tbody>
+</table>
+    </div>
+  );
+};
+
+export default StaffSummary;
