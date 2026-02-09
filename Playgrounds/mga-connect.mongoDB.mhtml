@@ -5303,7 +5303,7 @@ L5.47065 15.4707C5.21095 15.7304 4.78895 15.7304 4.52925 15.4707C4.26955 15=
 <p data-start=3D"416" data-end=3D"464">You run the backend at <strong data-=
 start=3D"439" data-end=3D"464"><a data-start=3D"441" data-end=3D"462" rel=
 =3D"noopener" target=3D"_new" class=3D"decorated-link" href=3D"http://local=
-host:5001/">http://localhost:5001<span aria-hidden=3D"true" class=3D"ms-0.5=
+host:5001/">https://mga-connect.onrender.com<span aria-hidden=3D"true" class=3D"ms-0.5=
  inline-block align-middle leading-none"><svg width=3D"20" height=3D"20" vi=
 ewBox=3D"0 0 20 20" fill=3D"currentColor" xmlns=3D"http://www.w3.org/2000/s=
 vg" data-rtl-flip=3D"" class=3D"block h-[0.75em] w-[0.75em] stroke-current =
@@ -15940,7 +15940,7 @@ mal [.text-message+&amp;]:mt-1"><div class=3D"flex w-full flex-col gap-1 em=
 pty:hidden items-end rtl:items-start"><div class=3D"user-message-bubble-col=
 or relative rounded-[18px] px-4 py-1.5 data-[multiline]:py-3 max-w-[var(--u=
 ser-chat-width,70%)]" data-multiline=3D""><div class=3D"whitespace-pre-wrap=
-">=E2=9C=85 Server running on http://localhost:5001
+">=E2=9C=85 Server running on https://mga-connect.onrender.com
 =E2=9C=85 Connected to MongoDB</div></div></div></div></div><div class=3D"z=
 -0 flex justify-end"><div class=3D"touch:-me-2 touch:-ms-3.5 -ms-2.5 -me-1 =
 flex flex-wrap items-center gap-y-4 p-1 select-none focus-within:transition=
@@ -17428,7 +17428,7 @@ ord">async</span></span><span> (</span><span><span class=3D"hljs-params">id=
     </span><span><span class=3D"hljs-keyword">const</span></span><span> res=
 ponse =3D </span><span><span class=3D"hljs-keyword">await</span></span><spa=
 n> </span><span><span class=3D"hljs-title function_">fetch</span></span><sp=
-an>(</span><span><span class=3D"hljs-string">`http://localhost:5001/booking=
+an>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/booking=
 s/notify/<span class=3D"hljs-subst">${id}</span></span></span><span>`, {
       </span><span><span class=3D"hljs-attr">method</span></span><span>: </=
 span><span><span class=3D"hljs-string">"POST"</span></span><span>
@@ -18581,7 +18581,7 @@ ord">async</span></span><span> (</span><span><span class=3D"hljs-params">id=
     </span><span><span class=3D"hljs-keyword">const</span></span><span> res=
 ponse =3D </span><span><span class=3D"hljs-keyword">await</span></span><spa=
 n> </span><span><span class=3D"hljs-title function_">fetch</span></span><sp=
-an>(</span><span><span class=3D"hljs-string">`http://localhost:5001/booking=
+an>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/booking=
 s/notify/<span class=3D"hljs-subst">${id}</span></span></span><span>`, {
       </span><span><span class=3D"hljs-attr">method</span></span><span>: </=
 span><span><span class=3D"hljs-string">"POST"</span></span><span>,
@@ -18962,7 +18962,7 @@ ble-color relative rounded-[18px] px-4 py-1.5 data-[multiline]:py-3 max-w-[=
 var(--user-chat-width,70%)]" data-multiline=3D""><div class=3D"whitespace-p=
 re-wrap">You want this block: const handleNotify =3D async (id) =3D&gt; {
   try {
-    const response =3D await fetch(<code>http://localhost:5001/bookings/not=
+    const response =3D await fetch(<code>https://mga-connect.onrender.com/bookings/not=
 ify/${id}</code>, {
       method: "POST",
     });
@@ -19309,7 +19309,7 @@ n> =3D </span><span><span class=3D"hljs-keyword">async</span></span><span> =
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 esponse =3D </span><span><span class=3D"hljs-keyword">await</span></span><s=
 pan> </span><span><span class=3D"hljs-title function_">fetch</span></span><=
-span>(</span><span><span class=3D"hljs-string">`http://localhost:5001/booki=
+span>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/booki=
 ngs/notify/<span class=3D"hljs-subst">${id}</span></span></span><span>`, {
         </span><span><span class=3D"hljs-attr">method</span></span><span>: =
 </span><span><span class=3D"hljs-string">"POST"</span></span><span>,
@@ -19867,7 +19867,7 @@ const BookingSummary =3D forwardRef(({ isStaff }, ref) =3D&gt; {
   // Fetch all bookings
   const fetchBookings =3D async () =3D&gt; {
     try {
-      const res =3D await axios.get("http://localhost:5001/bookings");
+      const res =3D await axios.get("https://mga-connect.onrender.com/bookings");
       setBookings(res.data);
     } catch (err) {
       console.error("Error fetching bookings:", err);
@@ -19887,7 +19887,7 @@ const BookingSummary =3D forwardRef(({ isStaff }, ref) =3D&gt; {
 
   const handleActionChange =3D async (id, selectedAction) =3D&gt; {
     try {
-      await axios.put(<code>http://localhost:5001/bookings/${id}</code>, {
+      await axios.put(<code>https://mga-connect.onrender.com/bookings/${id}</code>, {
         action: selectedAction,
       });
       if (selectedAction =3D=3D=3D "Notify Client") {
@@ -19901,7 +19901,7 @@ const BookingSummary =3D forwardRef(({ isStaff }, ref) =3D&gt; {
   };
   const handleNotify =3D async (id) =3D&gt; {
   try {
-    const response =3D await fetch(<code>http://localhost:5001/bookings/not=
+    const response =3D await fetch(<code>https://mga-connect.onrender.com/bookings/not=
 ify/${id}</code>, {
       method: "POST",
     });
@@ -27277,7 +27277,7 @@ const BookingSummary =3D forwardRef(({ isStaff }, ref) =3D&gt; {
   // Fetch all bookings
   const fetchBookings =3D async () =3D&gt; {
     try {
-      const res =3D await axios.get("http://localhost:5001/bookings");
+      const res =3D await axios.get("https://mga-connect.onrender.com/bookings");
       setBookings(res.data);
     } catch (err) {
       console.error("Error fetching bookings:", err);
@@ -27297,7 +27297,7 @@ const BookingSummary =3D forwardRef(({ isStaff }, ref) =3D&gt; {
 
   const handleActionChange =3D async (id, selectedAction) =3D&gt; {
     try {
-      await axios.put(<code>http://localhost:5001/bookings/${id}</code>, {
+      await axios.put(<code>https://mga-connect.onrender.com/bookings/${id}</code>, {
         action: selectedAction,
       });
       if (selectedAction =3D=3D=3D "Notify Client") {
@@ -27311,7 +27311,7 @@ const BookingSummary =3D forwardRef(({ isStaff }, ref) =3D&gt; {
   };
   const handleNotify =3D async (id) =3D&gt; {
   try {
-    const response =3D await fetch(<code>http://localhost:5001/bookings/not=
+    const response =3D await fetch(<code>https://mga-connect.onrender.com/bookings/not=
 ify/${id}</code>, {
       method: "POST",
     });
@@ -27879,7 +27879,7 @@ an> =3D </span><span><span class=3D"hljs-keyword">async</span></span><span>=
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 es =3D </span><span><span class=3D"hljs-keyword">await</span></span><span> =
 axios.</span><span><span class=3D"hljs-title function_">get</span></span><s=
-pan>(</span><span><span class=3D"hljs-string">"http://localhost:5001/bookin=
+pan>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/bookin=
 gs"</span></span><span>);
       </span><span><span class=3D"hljs-title function_">setBookings</span><=
 /span><span>(res.</span><span><span class=3D"hljs-property">data</span></sp=
@@ -27924,7 +27924,7 @@ n> =3D </span><span><span class=3D"hljs-keyword">async</span></span><span> =
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 esponse =3D </span><span><span class=3D"hljs-keyword">await</span></span><s=
 pan> </span><span><span class=3D"hljs-title function_">fetch</span></span><=
-span>(</span><span><span class=3D"hljs-string">`http://localhost:5001/booki=
+span>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/booki=
 ngs/notify/<span class=3D"hljs-subst">${id}</span></span></span><span>`, {
         </span><span><span class=3D"hljs-attr">method</span></span><span>: =
 </span><span><span class=3D"hljs-string">"POST"</span></span><span>,
@@ -27968,7 +27968,7 @@ span><span>) =3D&gt; {
     </span><span><span class=3D"hljs-keyword">try</span></span><span> {
       </span><span><span class=3D"hljs-keyword">await</span></span><span> a=
 xios.</span><span><span class=3D"hljs-title function_">put</span></span><sp=
-an>(</span><span><span class=3D"hljs-string">`http://localhost:5001/booking=
+an>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/booking=
 s/<span class=3D"hljs-subst">${id}</span></span></span><span>`, {
         </span><span><span class=3D"hljs-attr">action</span></span><span>: =
 selectedAction,
@@ -34736,7 +34736,7 @@ a-end=3D"592">Notify Client</strong></p>
 <ul data-start=3D"655" data-end=3D"782">
 <li data-start=3D"655" data-end=3D"707">
 <p data-start=3D"657" data-end=3D"707"><code data-start=3D"657" data-end=3D=
-"707">POST http://localhost:5001/bookings/notify/=E2=80=A6 404</code></p>
+"707">POST https://mga-connect.onrender.com/bookings/notify/=E2=80=A6 404</code></p>
 </li>
 <li data-start=3D"708" data-end=3D"722">
 <p data-start=3D"710" data-end=3D"722"><code data-start=3D"710" data-end=3D=
@@ -34828,7 +34828,7 @@ L2.30176 7.51172C2.60586 7.0159 3.04236 6.6122 3.56348 6.34668L3.70606 6.28=
 48L17.8867 3.70606C18.031 4.04235 18.0962 4.40306 18.1289 4.80371C18.1657 5=
 .25395 18.165 5.81091 18.165 6.5V9.33301Z"></path></svg>Copy code</button><=
 /div></div></div><div class=3D"overflow-y-auto p-4" dir=3D"ltr"><code class=
-=3D"whitespace-pre!"><span><span>POST http://localhost:5001/bookings/notify=
+=3D"whitespace-pre!"><span><span>POST https://mga-connect.onrender.com/bookings/notify=
 /:</span><span><span class=3D"hljs-built_in">id</span></span><span>
 </span></span></code></div></div></pre>
 <p data-start=3D"1032" data-end=3D"1077">But if your backend does NOT have =
@@ -35818,7 +35818,7 @@ C4.04237 6.136 4.40303 6.07083 4.80371 6.03809C5.14051 6.01057 5.53708 6.00=
 17.8867 3.70606C18.031 4.04235 18.0962 4.40306 18.1289 4.80371C18.1657 5.25=
 395 18.165 5.81091 18.165 6.5V9.33301Z"></path></svg>Copy code</button></di=
 v></div></div><div class=3D"overflow-y-auto p-4" dir=3D"ltr"><code class=3D=
-"whitespace-pre!"><span><span>http://localhost:5001/bookings/notify/6919464=
+"whitespace-pre!"><span><span>https://mga-connect.onrender.com/bookings/notify/6919464=
 49bad3c9d250977ed
 </span></span></code></div></div></pre>
 <p data-start=3D"330" data-end=3D"351">But the backend says:</p>
@@ -37896,7 +37896,7 @@ reated)
 (node:5078) [MONGODB DRIVER] Warning: useUnifiedTopology is a deprecated op=
 tion: useUnifiedTopology has no effect since Node.js Driver version 4.0.0 a=
 nd will be removed in the next major version
-=E2=9C=85 Server running on http://localhost:5001
+=E2=9C=85 Server running on https://mga-connect.onrender.com
 =E2=9C=85 Connected to MongoDB</div></div></div></div></div><div class=3D"z=
 -0 flex justify-end"><div class=3D"touch:-me-2 touch:-ms-3.5 -ms-2.5 -me-1 =
 flex flex-wrap items-center gap-y-4 p-1 select-none focus-within:transition=
@@ -38859,7 +38859,7 @@ app.put("/bookings/:id", async (req, res) =3D&gt; {
       });
 
       const PUBLIC_BASE_URL =3D
-        process.env.PUBLIC_BASE_URL || "http://localhost:5001";
+        process.env.PUBLIC_BASE_URL || "https://mga-connect.onrender.com";
 
       const mailOptions =3D {
         from: process.env.GMAIL_USER,
@@ -40322,7 +40322,7 @@ app.put("/bookings/:id", async (req, res) =3D&gt; {
       });
 
       const PUBLIC_BASE_URL =3D
-        process.env.PUBLIC_BASE_URL || "http://localhost:5001";
+        process.env.PUBLIC_BASE_URL || "https://mga-connect.onrender.com";
 
       const mailOptions =3D {
         from: process.env.GMAIL_USER,
@@ -45557,7 +45557,7 @@ fallback for local)</span></span><span>
 <span> =3D
   process.</span><span><span class=3D"hljs-property">env</span></span><span=
 >.</span><span><span class=3D"hljs-property">PUBLIC_BASE_URL</span></span><=
-span> || </span><span><span class=3D"hljs-string">"http://localhost:5001"</=
+span> || </span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com"</=
 span></span><span>;
 
 </span><span><span class=3D"hljs-comment">// ------------------------------=
@@ -46398,7 +46398,7 @@ col items-end gap-2 text-start break-words whitespace-normal [.text-message=
 nd rtl:items-start"><div class=3D"user-message-bubble-color relative rounde=
 d-[18px] px-4 py-1.5 data-[multiline]:py-3 max-w-[var(--user-chat-width,70%=
 )]" data-multiline=3D""><div class=3D"whitespace-pre-wrap">=F0=9F=9A=80 Ser=
-ver running on http://localhost:5001
+ver running on https://mga-connect.onrender.com
 =E2=9D=8C MongoDB error: MongooseError: The <code>uri</code> parameter to <=
 code>openUri()</code> must be a string, got "undefined". Make sure the firs=
 t parameter to <code>mongoose.connect()</code> or <code>mongoose.createConn=
@@ -47277,7 +47277,7 @@ user-chat-width,70%)]" data-multiline=3D""><div class=3D"whitespace-pre-wra=
 p">env file contains: MONGODB_URI=3Dmongodb://127.0.0.1:27017/mga_connect
 GMAIL_USER=3Dmga.dhaka@gmail.com
 GMAIL_APP_PASSWORD=3Dilmwgrmikqpzgsjv
-PUBLIC_BASE_URL=3Dhttp://localhost:5001</div></div></div></div></div><div c=
+PUBLIC_BASE_URL=3Dhttps://mga-connect.onrender.com</div></div></div></div></div><div c=
 lass=3D"z-0 flex justify-end"><div class=3D"touch:-me-2 touch:-ms-3.5 -ms-2=
 .5 -me-1 flex flex-wrap items-center gap-y-4 p-1 select-none focus-within:t=
 ransition-none hover:transition-none touch:pointer-events-auto touch:opacit=
@@ -50547,7 +50547,7 @@ export default function Booking({ onBookingAdded }) {
     const handleSubmit =3D async (e) =3D&gt; {
   e.preventDefault();
   try {
-    await axios.post("http://localhost:5001/bookings", formData);
+    await axios.post("https://mga-connect.onrender.com/bookings", formData);
     alert("=E2=9C=85 Booking saved successfully!");
 
     // Reset form
@@ -51340,7 +51340,7 @@ n></span><span>) =3D&gt; {
   </span><span><span class=3D"hljs-keyword">try</span></span><span> {
     </span><span><span class=3D"hljs-keyword">await</span></span><span> axi=
 os.</span><span><span class=3D"hljs-title function_">post</span></span><spa=
-n>(</span><span><span class=3D"hljs-string">"http://localhost:5001/bookings=
+n>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/bookings=
 "</span></span><span>, formData);
     </span><span><span class=3D"hljs-title function_">alert</span></span><s=
 pan>(</span><span><span class=3D"hljs-string">"=E2=9C=85 Booking saved succ=
@@ -51745,7 +51745,7 @@ multiline=3D""><div class=3D"whitespace-pre-wrap">My handleSubmit lokks: co=
 nst handleSubmit =3D async (e) =3D&gt; {
   e.preventDefault();
   try {
-    await axios.post("http://localhost:5001/bookings", formData);
+    await axios.post("https://mga-connect.onrender.com/bookings", formData);
     alert("=E2=9C=85 Booking saved successfully!");</div></div></div></div>=
 </div><div class=3D"z-0 flex justify-end"><div class=3D"touch:-me-2 touch:-=
 ms-3.5 -ms-2.5 -me-1 flex flex-wrap items-center gap-y-4 p-1 select-none fo=
@@ -52191,7 +52191,7 @@ async</span></span><span> (</span><span><span class=3D"hljs-params">e</span=
   </span><span><span class=3D"hljs-keyword">try</span></span><span> {
     </span><span><span class=3D"hljs-keyword">await</span></span><span> axi=
 os.</span><span><span class=3D"hljs-title function_">post</span></span><spa=
-n>(</span><span><span class=3D"hljs-string">"http://localhost:5001/bookings=
+n>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/bookings=
 "</span></span><span>, formData);
     </span><span><span class=3D"hljs-title function_">alert</span></span><s=
 pan>(</span><span><span class=3D"hljs-string">"=E2=9C=85 Booking saved succ=
@@ -56847,7 +56847,7 @@ L</strong></h1>
 <ul data-start=3D"539" data-end=3D"670">
 <li data-start=3D"539" data-end=3D"582">
 <p data-start=3D"541" data-end=3D"582"><code data-start=3D"541" data-end=3D=
-"580">http://localhost:5001/invoice/summary</code></p>
+"580">https://mga-connect.onrender.com/invoice/summary</code></p>
 </li>
 <li data-start=3D"583" data-end=3D"608">
 <p data-start=3D"585" data-end=3D"608">or <code data-start=3D"588" data-end=
@@ -56946,7 +56946,7 @@ n></span><span>
 </li>
 <li data-start=3D"862" data-end=3D"897">
 <p data-start=3D"864" data-end=3D"897">missing <code data-start=3D"872" dat=
-a-end=3D"895">http://localhost:5001</code></p>
+a-end=3D"895">https://mga-connect.onrender.com</code></p>
 </li>
 <li data-start=3D"898" data-end=3D"921">
 <p data-start=3D"900" data-end=3D"921">missing leading <code data-start=3D"=
@@ -57820,7 +57820,7 @@ ate
 
   const fetchInvoices =3D async () =3D&gt; {
     try {
-      const res =3D await axios.get("http://localhost:5001/invoices/summary=
+      const res =3D await axios.get("https://mga-connect.onrender.com/invoices/summary=
 ");
       setInvoices(res.data || []);
     } catch (err) {
@@ -57832,7 +57832,7 @@ ate
   const fetchClientDetails =3D async (name) =3D&gt; {
     try {
       const res =3D await axios.get(
-        <code>http://localhost:5001/invoices/details?corporateBankName=3D${=
+        <code>https://mga-connect.onrender.com/invoices/details?corporateBankName=3D${=
 encodeURIComponent(name)}</code>
       );
       setSelectedClient(name);
@@ -58311,7 +58311,7 @@ lass=3D"icon-sm"><path d=3D"M12.668 10.667C12.668 9.95614 12.668 9.46258 12=
 ></div></div><div class=3D"overflow-y-auto p-4" dir=3D"ltr"><code class=3D"=
 whitespace-pre! language-js"><span><span>axios.</span><span><span class=3D"=
 hljs-title function_">get</span></span><span>(</span><span><span class=3D"h=
-ljs-string">"http://localhost:5001/invoices/summary"</span></span><span>)
+ljs-string">"https://mga-connect.onrender.com/invoices/summary"</span></span><span>)
 </span></span></code></div></div></pre>
 <p data-start=3D"141" data-end=3D"236">So the <strong data-start=3D"148" da=
 ta-end=3D"206">404 means your backend route is NOT actually available</stro=
@@ -59570,7 +59570,7 @@ const transporter =3D nodemailer.createTransport({
 
 // Public link for cancellation (fallback for local)
 const PUBLIC_BASE_URL =3D
-  process.env.PUBLIC_BASE_URL || "http://localhost:5001";
+  process.env.PUBLIC_BASE_URL || "https://mga-connect.onrender.com";
 
 // ------------------------------------------------------
 //  CREATE A NEW BOOKING
@@ -60070,7 +60070,7 @@ C4.04237 6.136 4.40303 6.07083 4.80371 6.03809C5.14051 6.01057 5.53708 6.00=
 17.8867 3.70606C18.031 4.04235 18.0962 4.40306 18.1289 4.80371C18.1657 5.25=
 395 18.165 5.81091 18.165 6.5V9.33301Z"></path></svg>Copy code</button></di=
 v></div></div><div class=3D"overflow-y-auto p-4" dir=3D"ltr"><code class=3D=
-"whitespace-pre!"><span><span>GET http://localhost:5001/invoices/summary
+"whitespace-pre!"><span><span>GET https://mga-connect.onrender.com/invoices/summary
 </span></span></code></div></div></pre>
 <p data-start=3D"447" data-end=3D"455">returns:</p>
 <pre class=3D"overflow-visible!" data-start=3D"457" data-end=3D"478"><div c=
@@ -60925,7 +60925,7 @@ const transporter =3D nodemailer.createTransport({
 
 // Public link for cancellation (fallback for local)
 const PUBLIC_BASE_URL =3D
-  process.env.PUBLIC_BASE_URL || "http://localhost:5001";
+  process.env.PUBLIC_BASE_URL || "https://mga-connect.onrender.com";
 
 // ------------------------------------------------------
 //  CREATE A NEW BOOKING
@@ -61712,7 +61712,7 @@ C4.04237 6.136 4.40303 6.07083 4.80371 6.03809C5.14051 6.01057 5.53708 6.00=
 17.8867 3.70606C18.031 4.04235 18.0962 4.40306 18.1289 4.80371C18.1657 5.25=
 395 18.165 5.81091 18.165 6.5V9.33301Z"></path></svg>Copy code</button></di=
 v></div></div><div class=3D"overflow-y-auto p-4" dir=3D"ltr"><code class=3D=
-"whitespace-pre!"><span><span>http://localhost:5001/invoices/summary
+"whitespace-pre!"><span><span>https://mga-connect.onrender.com/invoices/summary
 </span></span></code></div></div></pre>
 <p data-start=3D"981" data-end=3D"996">in the browser.</p>
 <h3 data-start=3D"998" data-end=3D"1024">=F0=9F=91=89 What should happen:</=
@@ -63725,7 +63725,7 @@ L2.30176 7.51172C2.60586 7.0159 3.04236 6.6122 3.56348 6.34668L3.70606 6.28=
 48L17.8867 3.70606C18.031 4.04235 18.0962 4.40306 18.1289 4.80371C18.1657 5=
 .25395 18.165 5.81091 18.165 6.5V9.33301Z"></path></svg>Copy code</button><=
 /div></div></div><div class=3D"overflow-y-auto p-4" dir=3D"ltr"><code class=
-=3D"whitespace-pre!"><span><span>http://localhost:5001/cancel?</span><span>=
+=3D"whitespace-pre!"><span><span>https://mga-connect.onrender.com/cancel?</span><span>=
 <span class=3D"hljs-built_in">id</span></span><span>=3DXYZ
 </span></span></code></div></div></pre>
 <p data-start=3D"1115" data-end=3D"1119">But:</p>
@@ -80077,7 +80077,7 @@ pan></span><span>);
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 es =3D </span><span><span class=3D"hljs-keyword">await</span></span><span> =
 axios.</span><span><span class=3D"hljs-title function_">get</span></span><s=
-pan>(</span><span><span class=3D"hljs-string">"http://localhost:5001/analys=
+pan>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/analys=
 is/staff"</span></span><span>, {
         </span><span><span class=3D"hljs-attr">params</span></span><span>: =
 {
@@ -84445,7 +84445,7 @@ pan></span><span>);
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 es =3D </span><span><span class=3D"hljs-keyword">await</span></span><span> =
 axios.</span><span><span class=3D"hljs-title function_">get</span></span><s=
-pan>(</span><span><span class=3D"hljs-string">"http://localhost:5001/analys=
+pan>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/analys=
 is/category"</span></span><span>, {
         </span><span><span class=3D"hljs-attr">params</span></span><span>: =
 {
@@ -89322,7 +89322,7 @@ tDate || !endDate) {
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 es =3D </span><span><span class=3D"hljs-keyword">await</span></span><span> =
 axios.</span><span><span class=3D"hljs-title function_">get</span></span><s=
-pan>(</span><span><span class=3D"hljs-string">"http://localhost:5001/analys=
+pan>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/analys=
 is/category"</span></span><span>, {
         </span><span><span class=3D"hljs-attr">params</span></span><span>: =
 { startDate, endDate },
@@ -90034,7 +90034,7 @@ export default function CategoryAnalysis() {
     }
 
     try {
-      const res =3D await axios.get("http://localhost:5001/analysis/categor=
+      const res =3D await axios.get("https://mga-connect.onrender.com/analysis/categor=
 y", {
         params: {
           category,
@@ -91067,7 +91067,7 @@ pan></span><span>);
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 es =3D </span><span><span class=3D"hljs-keyword">await</span></span><span> =
 axios.</span><span><span class=3D"hljs-title function_">get</span></span><s=
-pan>(</span><span><span class=3D"hljs-string">"http://localhost:5001/analys=
+pan>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/analys=
 is/category"</span></span><span>, {
         </span><span><span class=3D"hljs-attr">params</span></span><span>: =
 {
@@ -93234,7 +93234,7 @@ export default function CategoryAnalysis() {
     }
 
     try {
-      const res =3D await axios.get("http://localhost:5001/analysis/categor=
+      const res =3D await axios.get("https://mga-connect.onrender.com/analysis/categor=
 y", {
         params: { startDate, endDate },
       });
@@ -94365,7 +94365,7 @@ tDate || !endDate) {
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 es =3D </span><span><span class=3D"hljs-keyword">await</span></span><span> =
 axios.</span><span><span class=3D"hljs-title function_">get</span></span><s=
-pan>(</span><span><span class=3D"hljs-string">"http://localhost:5001/analys=
+pan>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/analys=
 is/category"</span></span><span>, {
         </span><span><span class=3D"hljs-attr">params</span></span><span>: =
 { startDate, endDate },
@@ -99892,7 +99892,7 @@ tDate || !endDate) {
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 es =3D </span><span><span class=3D"hljs-keyword">await</span></span><span> =
 axios.</span><span><span class=3D"hljs-title function_">get</span></span><s=
-pan>(</span><span><span class=3D"hljs-string">"http://localhost:5001/analys=
+pan>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/analys=
 is/service-type"</span></span><span>, {
         </span><span><span class=3D"hljs-attr">params</span></span><span>: =
 { startDate, endDate },
@@ -103104,7 +103104,7 @@ const transporter =3D nodemailer.createTransport({
 
 // Public link for cancellation (fallback for local)
 const PUBLIC_BASE_URL =3D
-  process.env.PUBLIC_BASE_URL || "http://localhost:5001";
+  process.env.PUBLIC_BASE_URL || "https://mga-connect.onrender.com";
 
 // ------------------------------------------------------
 //  CREATE A NEW BOOKING
@@ -105182,7 +105182,7 @@ tDate || !endDate) {
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 es =3D </span><span><span class=3D"hljs-keyword">await</span></span><span> =
 axios.</span><span><span class=3D"hljs-title function_">get</span></span><s=
-pan>(</span><span><span class=3D"hljs-string">"http://localhost:5001/analys=
+pan>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/analys=
 is/service-type"</span></span><span>, {
         </span><span><span class=3D"hljs-attr">params</span></span><span>: =
 { startDate, endDate },
@@ -112884,7 +112884,7 @@ n> (</span><span><span class=3D"hljs-params">id, field, value</span></span>=
     </span><span><span class=3D"hljs-keyword">const</span></span><span> upd=
 ated =3D </span><span><span class=3D"hljs-keyword">await</span></span><span=
 > axios.</span><span><span class=3D"hljs-title function_">put</span></span>=
-<span>(</span><span><span class=3D"hljs-string">`http://localhost:5001/book=
+<span>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/book=
 ings/<span class=3D"hljs-subst">${id}</span></span></span><span>`, {
       [field]: value,
     });
@@ -113742,7 +113742,7 @@ n> (</span><span><span class=3D"hljs-params">id, field, value</span></span>=
   </span><span><span class=3D"hljs-keyword">try</span></span><span> {
     </span><span><span class=3D"hljs-keyword">await</span></span><span> axi=
 os.</span><span><span class=3D"hljs-title function_">put</span></span><span=
->(</span><span><span class=3D"hljs-string">`http://localhost:5001/bookings/=
+>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/bookings/=
 <span class=3D"hljs-subst">${id}</span></span></span><span>`, {
       [field]: value,
     });
@@ -114455,7 +114455,7 @@ const BookingSummary =3D forwardRef(({ isStaff }, ref) =3D&gt; {
   // Fetch all bookings
   const fetchBookings =3D async () =3D&gt; {
     try {
-      const res =3D await axios.get("http://localhost:5001/bookings");
+      const res =3D await axios.get("https://mga-connect.onrender.com/bookings");
       setBookings(res.data);
     } catch (err) {
       console.error("Error fetching bookings:", err);
@@ -114475,7 +114475,7 @@ const BookingSummary =3D forwardRef(({ isStaff }, ref) =3D&gt; {
   // Handle Notify button
   const handleNotify =3D async (id) =3D&gt; {
     try {
-      const response =3D await fetch(<code>http://localhost:5001/bookings/n=
+      const response =3D await fetch(<code>https://mga-connect.onrender.com/bookings/n=
 otify/${id}</code>, {
         method: "POST",
       });
@@ -114497,7 +114497,7 @@ otify/${id}</code>, {
   // Handle Action dropdown
   const handleActionChange =3D async (id, selectedAction) =3D&gt; {
     try {
-      await axios.put(<code>http://localhost:5001/bookings/${id}</code>, {
+      await axios.put(<code>https://mga-connect.onrender.com/bookings/${id}</code>, {
         action: selectedAction,
       });
       fetchBookings();
@@ -114973,7 +114973,7 @@ n><span>) =3D&gt; {
     </span><span><span class=3D"hljs-keyword">try</span></span><span> {
       </span><span><span class=3D"hljs-keyword">await</span></span><span> a=
 xios.</span><span><span class=3D"hljs-title function_">put</span></span><sp=
-an>(</span><span><span class=3D"hljs-string">`http://localhost:5001/booking=
+an>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/booking=
 s/<span class=3D"hljs-subst">${id}</span></span></span><span>`, {
         [field]: value,
       });
@@ -115105,7 +115105,7 @@ an> =3D </span><span><span class=3D"hljs-keyword">async</span></span><span>=
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 es =3D </span><span><span class=3D"hljs-keyword">await</span></span><span> =
 axios.</span><span><span class=3D"hljs-title function_">get</span></span><s=
-pan>(</span><span><span class=3D"hljs-string">"http://localhost:5001/bookin=
+pan>(</span><span><span class=3D"hljs-string">"https://mga-connect.onrender.com/bookin=
 gs"</span></span><span>);
       </span><span><span class=3D"hljs-title function_">setBookings</span><=
 /span><span>(res.</span><span><span class=3D"hljs-property">data</span></sp=
@@ -115150,7 +115150,7 @@ n> =3D </span><span><span class=3D"hljs-keyword">async</span></span><span> =
       </span><span><span class=3D"hljs-keyword">const</span></span><span> r=
 esponse =3D </span><span><span class=3D"hljs-keyword">await</span></span><s=
 pan> </span><span><span class=3D"hljs-title function_">fetch</span></span><=
-span>(</span><span><span class=3D"hljs-string">`http://localhost:5001/booki=
+span>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/booki=
 ngs/notify/<span class=3D"hljs-subst">${id}</span></span></span><span>`, {
         </span><span><span class=3D"hljs-attr">method</span></span><span>: =
 </span><span><span class=3D"hljs-string">"POST"</span></span><span>,
@@ -115193,7 +115193,7 @@ n><span>) =3D&gt; {
     </span><span><span class=3D"hljs-keyword">try</span></span><span> {
       </span><span><span class=3D"hljs-keyword">await</span></span><span> a=
 xios.</span><span><span class=3D"hljs-title function_">put</span></span><sp=
-an>(</span><span><span class=3D"hljs-string">`http://localhost:5001/booking=
+an>(</span><span><span class=3D"hljs-string">`https://mga-connect.onrender.com/booking=
 s/<span class=3D"hljs-subst">${id}</span></span></span><span>`, {
         [field]: value,
       });
@@ -129453,7 +129453,7 @@ ate
 
   const fetchInvoices =3D async () =3D&gt; {
     try {
-      const res =3D await axios.get("http://localhost:5001/invoices/summary=
+      const res =3D await axios.get("https://mga-connect.onrender.com/invoices/summary=
 ");
       setInvoices(res.data || []);
     } catch (err) {
@@ -129465,7 +129465,7 @@ ate
   const fetchClientDetails =3D async (name) =3D&gt; {
     try {
       const res =3D await axios.get(
-        <code>http://localhost:5001/invoices/details?corporateBankName=3D${=
+        <code>https://mga-connect.onrender.com/invoices/details?corporateBankName=3D${=
 encodeURIComponent(name)}</code>
       );
       setSelectedClient(name);

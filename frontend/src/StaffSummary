@@ -13,7 +13,7 @@ const StaffSummary = () => {
   // Fetch all bookings
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/bookings");
+      const res = await axios.get("https://mga-connect.onrender.com/bookings");
       setBookings(res.data);
     } catch (err) {
       console.error("Error fetching bookings:", err);

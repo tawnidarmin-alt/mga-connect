@@ -14,20 +14,20 @@ export default function InvoiceSummary() {
       setLoading(true);
       try {
         if (view === "summary") {
-          const res = await axios.get("http://localhost:5001/invoices/summary");
+          const res = await axios.get("https://mga-connect.onrender.com/invoices/summary");
           setSummary(res.data);
         } else if (view === "bank") {
-          const res = await axios.get("http://localhost:5001/invoices/banks");
+          const res = await axios.get("https://mga-connect.onrender.com/invoices/banks");
           setDetails(res.data);
         } else if (view === "corporate") {
-          const res = await axios.get("http://localhost:5001/invoices/corporates");
+          const res = await axios.get("https://mga-connect.onrender.com/invoices/corporates");
           setDetails(res.data);
         } else if (view === "others") {
-          const res = await axios.get("http://localhost:5001/invoices/others");
+          const res = await axios.get("https://mga-connect.onrender.com/invoices/others");
           setDetails(res.data);
         } else if (view === "details") {
           const res = await axios.get(
-            `http://localhost:5001/invoices/pdf?corporateBankName=${encodeURIComponent(currentName)}`,
+            `https://mga-connect.onrender.com/invoices/pdf?corporateBankName=${encodeURIComponent(currentName)}`,
             { responseType: "blob" } // receive PDF
           );
           const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));

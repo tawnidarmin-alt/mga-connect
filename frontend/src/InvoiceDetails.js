@@ -16,7 +16,7 @@ export default function InvoiceDetails() {
   const fetchClientDetails = useCallback(
     async (month = "") => {
       try {
-        let url = `http://localhost:5001/invoices/details?corporateBankName=${encodeURIComponent(
+        let url = `https://mga-connect.onrender.com/invoices/details?corporateBankName=${encodeURIComponent(
           clientName
         )}`;
         if (month) url += `&month=${month}`;

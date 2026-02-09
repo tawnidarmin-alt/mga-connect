@@ -36,7 +36,7 @@
 
     <script>
         async function loadBookings() {
-            const response = await fetch('http://localhost:5001/bookings');
+            const response = await fetch('https://mga-connect.onrender.com/bookings');
             const bookings = await response.json();
             const tableBody = document.getElementById('bookingTableBody');
             
@@ -62,7 +62,7 @@
         }
 
         async function notifyClient(code) {
-            const res = await fetch(`http://localhost:5001/bookings/notify/${code}`, { method: 'POST' });
+            const res = await fetch(`https://mga-connect.onrender.com/bookings/notify/${code}`, { method: 'POST' });
             if (res.ok) {
                 document.getElementById(`status-${code}`).innerText = 'Notified';
                 document.getElementById(`status-${code}`).classList.add('status-notified');
