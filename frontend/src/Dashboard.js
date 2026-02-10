@@ -6,7 +6,6 @@ const EditableCell = ({ initialValue, onSave, disabled = false }) => {
   const [localValue, setLocalValue] = useState(initialValue);
   const [isSaving, setIsSaving] = useState(false);
 
-  // THIS FIXES THE BOOKINGSUMMARY ISSUE: 
   // It updates the cell if the database changes elsewhere
   useEffect(() => {
     setLocalValue(initialValue);

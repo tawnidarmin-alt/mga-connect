@@ -19,14 +19,8 @@ const twilioClient = new twilio(
 const TWILIO_WHATSAPP_NUMBER = process.env.TWILIO_NUMBER || "whatsapp:+14155238886";
 
 // 3. Initialize Nodemailer
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    // This covers both GMAIL_PASS and GMAIL_APP_PASSWORD
-    pass: process.env.GMAIL_PASS || process.env.GMAIL_APP_PASSWORD,
-  },
-});
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // --- 1. Database Connection ---
 mongoose.connect(process.env.MONGO_URI)
@@ -161,8 +155,9 @@ app.post("/notify-client/:id", async (req, res) => {
       console.error("❌ WhatsApp Error:", wErr.message);
     }
 
-    const mailOptions = {
-      from: `"MGA Connect" <${process.env.GMAIL_USER}>`,
+    // 4. Send Email via Resend
+    const { data, error } = await resend.emails.send({
+      from: 'MGA Connect <onboarding@resend.dev>', // Must use this for testing
       to: b.email,
       subject: `Booking Confirmation: ${displayId}`,
       html: `
@@ -175,7 +170,14 @@ app.post("/notify-client/:id", async (req, res) => {
           </div>
         </div>
       `,
-    };
+    });
+
+    if (error) {
+      console.error("Email Error:", error);
+      return res.status(500).json({ error: "Failed to send email" });
+    }
+
+    console.log("Email sent successfully:", data);
 
     try {
       await transporter.sendMail(mailOptions);

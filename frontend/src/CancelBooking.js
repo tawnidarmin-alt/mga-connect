@@ -9,7 +9,7 @@ const CancelBooking = () => {
   const handleCancel = () => {
     if (window.confirm("Are you sure you want to cancel this booking?")) {
       // Changed the path from /bookings/ to /update-booking/ to match the dashboard logic
-      axios.put(`http://192.168.1.5:5001/update-booking/${id}`, { status: "Cancelled" })
+     axios.put(`https://mga-connect.onrender.com/update-booking/${id}`, { status: "Cancelled" })
         .then(() => setStatus("success"))
         .catch((err) => {
           console.error("Error details:", err);
