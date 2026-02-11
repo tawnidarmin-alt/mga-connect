@@ -171,6 +171,7 @@ const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
             <li><strong>Time:</strong> ${b.flightTime}</li>
             <li><strong>Pax:</strong> ${b.numberOfPassenger}</li> 
           </ul>
+          <p>Thank you for choosing MGA Connect!</p>
           <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
             <p><strong>Manage your booking here:</strong></p>
             <a href="${cancelUrl}" style="background-color: #d9534f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Cancel Booking</a>
