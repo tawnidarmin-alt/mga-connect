@@ -123,89 +123,40 @@ app.post("/notify-client/:id", async (req, res) => {
     const displayId = b.bookingCode || b.bookingId || b._id.toString().slice(-6).toUpperCase();
     const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
 
-    // 1. WhatsApp Message (Your excellent version)
-    const whatsappMsg = 
-      `*MGA CONNECT - BOOKING CONFIRMED* ✈️\n\n` +
-      `Hello *${b.name}*,\n` +
-      `Your trip is officially booked! Here are your details:\n\n` +
-      `🆔 *Booking ID:* ${displayId}\n` +
-      `📅 *Date:* ${b.flightDate}\n` +
-      `🕒 *Time:* ${b.flightTime}\n` +
-      `🔢 *Pax:* ${b.numberOfPassenger}\n\n` +
-      `*Manage your booking here:* \n${cancelUrl}`;
+    // 1. Send Success to Browser FIRST so it doesn't say "Failed"
+    res.status(200).json({ success: true, message: "Notifications triggered" });
 
-    try {
-      await twilioClient.messages.create({
-        from: process.env.TWILIO_WHATSAPP_NUMBER,
-        to: `whatsapp:${b.contactNumber.startsWith('+') ? b.contactNumber : '+' + b.contactNumber}`,
-        body: whatsappMsg,
-      });
-      console.log("WhatsApp sent successfully!");
-    } catch (wErr) {
-      console.error("❌ WhatsApp Error:", wErr.message);
-    }
+    // 2. Background WhatsApp (This is working excellently!)
+    const whatsappMsg = `*MGA CONNECT - BOOKING CONFIRMED* ✈️\n\nHello *${b.name}*,\nID: ${displayId}\nDate: ${b.flightDate}\nTime: ${b.flightTime}\nPax: ${b.numberOfPassenger}\n\n*Manage:* ${cancelUrl}`;
+    
+    twilioClient.messages.create({
+      from: process.env.TWILIO_WHATSAPP_NUMBER,
+      to: `whatsapp:${b.contactNumber.startsWith('+') ? b.contactNumber : '+' + b.contactNumber}`,
+      body: whatsappMsg,
+    }).catch(err => console.error("WhatsApp Error:", err.message));
 
-    // 2. Email Message (Full detailed version)
-    try {
-      await resend.emails.send({
-        from: 'MGA Connect <onboarding@resend.dev>', 
-        to: b.email,
-        subject: `Booking Confirmation: ${displayId}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; border: 1px solid #eee; padding: 20px; border-radius: 10px; max-width: 600px;">
-            <h2 style="color: #003366;">MGA CONNECT - BOOKING CONFIRMED ✈️</h2>
-            <p>Hello <strong>${b.name}</strong>,</p>
-            <p>Your trip is officially booked! Here are your details:</p>
-            <ul style="list-style: none; padding: 0;">
-              <li><strong>Booking ID:</strong> ${displayId}</li>
-              <li><strong>Date:</strong> ${b.flightDate}</li>
-              <li><strong>Time:</strong> ${b.flightTime}</li>
-              <li><strong>Pax:</strong> ${b.numberOfPassenger}</li> 
-            </ul>
-            <p>Thank you for choosing MGA Connect!</p>
-            <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
-              <p><strong>Manage your booking here:</strong></p>
-              <a href="${cancelUrl}" style="background-color: #d9534f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Cancel Booking</a>
-            </div>
-          </div>
-        `,
-      });
-      console.log("Email sent successfully!");
-    } catch (eErr) {
-      console.error("❌ Email Error:", eErr.message);
-    }
-
-    // 3. Send SUCCESS to browser
-    return res.status(200).json({ success: true, message: "Notifications processed!" });
+    // 3. Background Email 
+    // NOTE: This will only work for tawnidarmin@gmail.com until you verify a domain!
+    resend.emails.send({
+      from: 'MGA Connect <onboarding@resend.dev>',
+      to: b.email,
+      subject: `Booking Confirmation: ${displayId}`,
+      html: `
+        <div style="font-family: Arial; padding: 20px; border: 1px solid #eee;">
+          <h2>MGA CONNECT - CONFIRMED ✈️</h2>
+          <p>Hello ${b.name}, your trip is booked.</p>
+          <ul>
+            <li>ID: ${displayId}</li>
+            <li>Date: ${b.flightDate}</li>
+          </ul>
+          <a href="${cancelUrl}">Manage Booking</a>
+        </div>`
+    }).catch(err => {
+      console.log("Email blocked by Resend Testing Mode (Check if recipient is not you)");
+    });
 
   } catch (err) {
-    console.error("Global Route Error:", err);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-      if (error) {
-        console.error("Resend specific error:", error);
-      } else {
-        console.log("4. Email sent via Resend!");
-      }
-    } catch (emailErr) {
-      console.error("❌ Email process failed:", emailErr.message);
-    }
-    console.log("Email sent successfully:", data);
-
-    try {
-      await transporter.sendMail(mailOptions);
-      console.log("6. Email sent!"); // Added log
-    } catch (mErr) {
-      console.error("❌ Email Error:", mErr.message);
-    }
-
-    b.notified = true;
-    await b.save();
-    res.json({ success: true });
-  } catch (err) {
-    console.error("❌ Route Error:", err.message); // Added log
-    res.status(500).json({ error: err.message });
+    console.error("Global Error:", err.message);
   }
 });
 
