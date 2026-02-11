@@ -115,86 +115,72 @@ app.put("/update-booking/:id", async (req, res) => {
   }
 });
 
+// 1. THE NOTIFICATION ROUTE
 app.post("/notify-client/:id", async (req, res) => {
   try {
     const b = await Booking.findById(req.params.id);
     if (!b) return res.status(404).json({ error: "Booking not found" });
 
-    // Update DB to show the green "Notified" status
-    b.notified = true; 
+    // Update the DB for the Green Notified text
+    b.notified = true;
     b.notificationDate = new Date();
     await b.save();
 
     const displayId = b.bookingCode || b.bookingId || b._id.toString().slice(-6).toUpperCase();
-    const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
+    
+    // THE URL: We use the backend URL directly to ensure the server catches the click
+    const cancelUrl = `https://mga-connect.onrender.com/cancel/${b._id}`;
 
-    // 1. Respond to browser immediately
-    res.status(200).json({ success: true, message: "Notifications sent successfully!" });
+    // Send success to browser immediately
+    res.status(200).json({ success: true, message: "Notifications sent!" });
 
-    // 2. WhatsApp Message (Your preferred "Old" formatting)
-    const whatsappMsg = 
-      `*MGA CONNECT - BOOKING CONFIRMED* ✈️\n\n` +
-      `Hello *${b.name}*,\n` +
-      `Your trip is officially booked! Here are your details:\n\n` +
-      `🆔 *Booking ID:* ${displayId}\n` +
-      `📅 *Date:* ${b.flightDate}\n` +
-      `🕒 *Time:* ${b.flightTime}\n` +
-      `🔢 *Pax:* ${b.numberOfPassenger}\n\n` +
-      `*Manage your booking here:* \n${cancelUrl}`;
-
+    // WhatsApp
+    const whatsappMsg = `*MGA CONNECT - BOOKING CONFIRMED* ✈️\n\nHello *${b.name}*,\nID: ${displayId}\nDate: ${b.flightDate}\nTime: ${b.flightTime}\nPax: ${b.numberOfPassenger}\n\n*Manage:* ${cancelUrl}`;
     twilioClient.messages.create({
       from: process.env.TWILIO_WHATSAPP_NUMBER,
       to: `whatsapp:${b.contactNumber.startsWith('+') ? b.contactNumber : '+' + b.contactNumber}`,
       body: whatsappMsg,
     }).catch(err => console.error("WhatsApp Error:", err.message));
 
-    // 3. Email Message (Matching the WhatsApp details and structure)
+    // Email
     resend.emails.send({
       from: 'MGA Connect <onboarding@resend.dev>',
       to: b.email,
       subject: `Booking Confirmation: ${displayId}`,
       html: `
-        <div style="font-family: Arial, sans-serif; border: 1px solid #eee; padding: 20px; border-radius: 10px; max-width: 600px; color: #333;">
-          <h2 style="color: #003366; border-bottom: 2px solid #003366; padding-bottom: 10px;">MGA CONNECT - BOOKING CONFIRMED ✈️</h2>
-          <p>Hello <strong>${b.name}</strong>,</p>
-          <p>Your trip is officially booked! Here are your details:</p>
-          
-          <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; line-height: 1.6;">
-            <p style="margin: 5px 0;">🆔 <strong>Booking ID:</strong> ${displayId}</p>
-            <p style="margin: 5px 0;">📅 <strong>Date:</strong> ${b.flightDate}</p>
-            <p style="margin: 5px 0;">🕒 <strong>Time:</strong> ${b.flightTime}</p>
-            <p style="margin: 5px 0;">🔢 <strong>Pax:</strong> ${b.numberOfPassenger}</p>
+        <div style="font-family: Arial; padding: 20px; border: 1px solid #eee; max-width: 600px;">
+          <h2 style="color: #003366;">MGA CONNECT - CONFIRMED ✈️</h2>
+          <p>Hello <strong>${b.name}</strong>, your trip is booked!</p>
+          <p>🆔 ID: ${displayId}<br>📅 Date: ${b.flightDate}<br>🕒 Time: ${b.flightTime}<br>🔢 Pax: ${b.numberOfPassenger}</p>
+          <div style="margin: 20px 0;">
+            <a href="${cancelUrl}" style="background-color: #d9534f; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">Cancel Booking</a>
           </div>
-
-          <p><strong>Manage your booking here:</strong></p>
-          <div style="margin-top: 15px;">
-            <a href="${cancelUrl}" style="background-color: #d9534f; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Cancel Booking</a>
-          </div>
-          
-          <p style="margin-top: 25px; font-size: 12px; color: #888;">Thank you for choosing MGA Connect!</p>
+          <p style="font-size: 10px; color: #999;">Link: ${cancelUrl}</p>
         </div>`
     }).catch(err => console.error("Email Error:", err.message));
 
   } catch (err) {
-    console.error("Critical Route Error:", err.message);
+    console.error("Route Error:", err.message);
   }
 });
 
-// Cancel Booking Route
-app.get("/cancel-booking/:id", async (req, res) => {
+// 2. THE CANCELLATION ROUTE (Must match the URL above exactly)
+app.get("/cancel/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    const booking = await Booking.findById(id);
+    const booking = await Booking.findById(req.params.id);
     if (!booking) return res.status(404).send("<h1>Booking not found</h1>");
+
     booking.status = "Cancelled";
     await booking.save();
-    res.send(`<h1>Booking Cancelled</h1><p>Successfully cancelled for ${booking.name}.</p>`);
-  } catch (err) {
-    res.status(500).send("Error");
-  }
-});
 
-const PORT = 5001;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://192.168.1.5:${PORT}`);
+    res.send(`
+      <div style="font-family: Arial; text-align: center; padding: 50px;">
+        <h1 style="color: #003366;">MGA CONNECT</h1>
+        <h2 style="color: #d9534f;">Booking Cancelled</h2>
+        <p>Your booking for <strong>${booking.name}</strong> has been cancelled.</p>
+      </div>
+    `);
+  } catch (err) {
+    res.status(500).send("Error processing request");
+  }
 });
