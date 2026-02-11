@@ -131,7 +131,8 @@ app.post("/notify-client/:id", async (req, res) => {
     
     // THE FIX: Explicitly stringify the ID to ensure the URL is perfect
     const bookingIdString = b._id.toString();
-    const cancelUrl = `https://mga-connect.onrender.com/cancel/${bookingIdString}`;
+    // CHANGE THIS LINE
+const cancelUrl = `https://mga-connect.onrender.com/cancel/${b._id}`;
 
     // Success to browser
     res.status(200).json({ success: true, message: "Notifications sent!" });
