@@ -130,7 +130,7 @@ app.post("/notify-client/:id", async (req, res) => {
     console.log("3. Found booking for:", b.name);
     
     const displayId = b.bookingCode || b.bookingId || b._id.toString().slice(-6).toUpperCase();
-    const cancelUrl = `http://192.168.1.5.nip.io:3000/cancel/${b._id}`;
+const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
     
     console.log("4. Attempting WhatsApp to:", b.contactNumber);
 
