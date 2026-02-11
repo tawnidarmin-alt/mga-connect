@@ -120,40 +120,63 @@ app.post("/notify-client/:id", async (req, res) => {
     const b = await Booking.findById(req.params.id);
     if (!b) return res.status(404).json({ error: "Booking not found" });
 
-    const displayId = b.bookingCode || b.bookingId || b._id.toString().slice(-6).toUpperCase();
-    const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
-
-    // 1. UPDATE DATABASE status (This makes the Green Text appear)
+    // Update DB to show the green "Notified" status
     b.notified = true; 
     b.notificationDate = new Date();
     await b.save();
 
-    // 2. WhatsApp (Working)
-    const whatsappMsg = `*MGA CONNECT - CONFIRMED* ✈️\n\nID: ${displayId}\nDate: ${b.flightDate}\nPax: ${b.numberOfPassenger}\n\n*Manage:* ${cancelUrl}`;
-    try {
-      await twilioClient.messages.create({
-        from: process.env.TWILIO_WHATSAPP_NUMBER,
-        to: `whatsapp:${b.contactNumber.startsWith('+') ? b.contactNumber : '+' + b.contactNumber}`,
-        body: whatsappMsg,
-      });
-    } catch (wErr) { console.error("WhatsApp Error:", wErr.message); }
+    const displayId = b.bookingCode || b.bookingId || b._id.toString().slice(-6).toUpperCase();
+    const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
 
-    // 3. Email (Only arrives if recipient is tawnidarmin@gmail.com)
-    try {
-      await resend.emails.send({
-        from: 'MGA Connect <onboarding@resend.dev>',
-        to: b.email, 
-        subject: `Booking Confirmation: ${displayId}`,
-        html: `<div style="font-family: Arial; padding: 20px;"><h2>MGA CONNECT CONFIRMED</h2><p>ID: ${displayId}</p><p>Date: ${b.flightDate}</p><a href="${cancelUrl}">Manage Booking</a></div>`
-      });
-    } catch (eErr) { console.log("Email blocked by Resend Testing Mode"); }
+    // 1. Respond to browser immediately
+    res.status(200).json({ success: true, message: "Notifications sent successfully!" });
 
-    // 4. Send Success to browser
-    return res.status(200).json({ success: true, message: "Notification sent successfully!" });
+    // 2. WhatsApp Message (Your preferred "Old" formatting)
+    const whatsappMsg = 
+      `*MGA CONNECT - BOOKING CONFIRMED* ✈️\n\n` +
+      `Hello *${b.name}*,\n` +
+      `Your trip is officially booked! Here are your details:\n\n` +
+      `🆔 *Booking ID:* ${displayId}\n` +
+      `📅 *Date:* ${b.flightDate}\n` +
+      `🕒 *Time:* ${b.flightTime}\n` +
+      `🔢 *Pax:* ${b.numberOfPassenger}\n\n` +
+      `*Manage your booking here:* \n${cancelUrl}`;
+
+    twilioClient.messages.create({
+      from: process.env.TWILIO_WHATSAPP_NUMBER,
+      to: `whatsapp:${b.contactNumber.startsWith('+') ? b.contactNumber : '+' + b.contactNumber}`,
+      body: whatsappMsg,
+    }).catch(err => console.error("WhatsApp Error:", err.message));
+
+    // 3. Email Message (Matching the WhatsApp details and structure)
+    resend.emails.send({
+      from: 'MGA Connect <onboarding@resend.dev>',
+      to: b.email,
+      subject: `Booking Confirmation: ${displayId}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; border: 1px solid #eee; padding: 20px; border-radius: 10px; max-width: 600px; color: #333;">
+          <h2 style="color: #003366; border-bottom: 2px solid #003366; padding-bottom: 10px;">MGA CONNECT - BOOKING CONFIRMED ✈️</h2>
+          <p>Hello <strong>${b.name}</strong>,</p>
+          <p>Your trip is officially booked! Here are your details:</p>
+          
+          <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; line-height: 1.6;">
+            <p style="margin: 5px 0;">🆔 <strong>Booking ID:</strong> ${displayId}</p>
+            <p style="margin: 5px 0;">📅 <strong>Date:</strong> ${b.flightDate}</p>
+            <p style="margin: 5px 0;">🕒 <strong>Time:</strong> ${b.flightTime}</p>
+            <p style="margin: 5px 0;">🔢 <strong>Pax:</strong> ${b.numberOfPassenger}</p>
+          </div>
+
+          <p><strong>Manage your booking here:</strong></p>
+          <div style="margin-top: 15px;">
+            <a href="${cancelUrl}" style="background-color: #d9534f; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Cancel Booking</a>
+          </div>
+          
+          <p style="margin-top: 25px; font-size: 12px; color: #888;">Thank you for choosing MGA Connect!</p>
+        </div>`
+    }).catch(err => console.error("Email Error:", err.message));
 
   } catch (err) {
-    console.error("Main Route Error:", err.message);
-    return res.status(500).json({ error: "Internal server error" });
+    console.error("Critical Route Error:", err.message);
   }
 });
 
