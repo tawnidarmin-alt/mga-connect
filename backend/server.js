@@ -157,16 +157,23 @@ const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
 
     // 4. Send Email via Resend
     const { data, error } = await resend.emails.send({
-      from: 'MGA Connect <onboarding@resend.dev>', // Must use this for testing
+      from: 'MGA Connect <onboarding@resend.dev>', 
       to: b.email,
       subject: `Booking Confirmation: ${displayId}`,
       html: `
         <div style="font-family: Arial, sans-serif; border: 1px solid #eee; padding: 20px; border-radius: 10px; max-width: 600px;">
-          <h2 style="color: #003366;">Booking Confirmed</h2>
+          <h2 style="color: #003366;">MGA CONNECT - BOOKING CONFIRMED ✈️</h2>
           <p>Hello <strong>${b.name}</strong>,</p>
-          <p>Your booking <strong>${displayId}</strong> is confirmed.</p>
-          <div style="margin-top: 20px;">
-            <a href="${cancelUrl}" style="background-color: #d9534f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Cancel Booking</a>
+          <p>Your trip is officially booked! Here are your details:</p>
+          <ul style="list-style: none; padding: 0;">
+            <li><strong>Booking ID:</strong> ${displayId}</li>
+            <li><strong>Date:</strong> ${b.flightDate}</li>
+            <li><strong>Time:</strong> ${b.flightTime}</li>
+            <li><strong>Pax:</strong> ${b.numberOfPassenger}</li> 
+          </ul>
+          <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
+            <p><strong>Manage your booking here:</strong></p>
+            <a href="${cancelUrl}" style="background-color: #d9534f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Cancel Booking</a>
           </div>
         </div>
       `,
