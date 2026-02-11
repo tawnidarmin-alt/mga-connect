@@ -115,25 +115,15 @@ app.put("/update-booking/:id", async (req, res) => {
   }
 });
 
-// Notify Client
 app.post("/notify-client/:id", async (req, res) => {
-  console.log("1. Incoming request for ID:", req.params.id);
   try {
-    const { id } = req.params;
-    const b = await Booking.findById(id);
-    
-    if (!b) {
-      console.log("2. Booking not found in DB");
-      return res.status(404).json({ error: "Booking not found" });
-    }
+    const b = await Booking.findById(req.params.id);
+    if (!b) return res.status(404).json({ error: "Booking not found" });
 
-    console.log("3. Found booking for:", b.name);
-    
     const displayId = b.bookingCode || b.bookingId || b._id.toString().slice(-6).toUpperCase();
-const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
-    
-    console.log("4. Attempting WhatsApp to:", b.contactNumber);
+    const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
 
+    // 1. WhatsApp Message (Your excellent version)
     const whatsappMsg = 
       `*MGA CONNECT - BOOKING CONFIRMED* ✈️\n\n` +
       `Hello *${b.name}*,\n` +
@@ -146,18 +136,18 @@ const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
 
     try {
       await twilioClient.messages.create({
-        from: TWILIO_WHATSAPP_NUMBER,
+        from: process.env.TWILIO_WHATSAPP_NUMBER,
         to: `whatsapp:${b.contactNumber.startsWith('+') ? b.contactNumber : '+' + b.contactNumber}`,
         body: whatsappMsg,
       });
-      console.log("5. WhatsApp sent!"); // Added log
+      console.log("WhatsApp sent successfully!");
     } catch (wErr) {
       console.error("❌ WhatsApp Error:", wErr.message);
     }
 
-    // 4. Send Email via Resend
+    // 2. Email Message (Full detailed version)
     try {
-      const { data, error } = await resend.emails.send({
+      await resend.emails.send({
         from: 'MGA Connect <onboarding@resend.dev>', 
         to: b.email,
         subject: `Booking Confirmation: ${displayId}`,
@@ -180,7 +170,19 @@ const cancelUrl = `https://mga-connect-frontend.onrender.com/cancel/${b._id}`;
           </div>
         `,
       });
+      console.log("Email sent successfully!");
+    } catch (eErr) {
+      console.error("❌ Email Error:", eErr.message);
+    }
 
+    // 3. Send SUCCESS to browser
+    return res.status(200).json({ success: true, message: "Notifications processed!" });
+
+  } catch (err) {
+    console.error("Global Route Error:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
       if (error) {
         console.error("Resend specific error:", error);
       } else {
