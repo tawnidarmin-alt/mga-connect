@@ -132,7 +132,7 @@ app.post("/notify-client/:id", async (req, res) => {
     // THE FIX: Explicitly stringify the ID to ensure the URL is perfect
     const bookingIdString = b._id.toString();
     // CHANGE THIS LINE
-const cancelUrl = `https://mga-connect.onrender.com/cancel/${b._id}`;
+const cancelUrl = https://mga-connect.onrender.com/cancel/${b._id}
 
     // Success to browser
     res.status(200).json({ success: true, message: "Notifications sent!" });
@@ -171,34 +171,25 @@ const cancelUrl = `https://mga-connect.onrender.com/cancel/${b._id}`;
 // 2. THE CANCELLATION ROUTE
 app.get("/cancel/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    
-    // THE FIX: Search by ID, but also handle potential whitespace/formatting issues
-    const booking = await Booking.findById(id.trim());
-    
-    if (!booking) {
-      console.log("Booking not found for ID:", id);
-      return res.status(404).send(`
-        <div style="font-family: Arial; text-align: center; padding: 50px;">
-          <h1 style="color: #d9534f;">Booking Not Found</h1>
-          <p>We couldn't find a record for ID: ${id}</p>
-          <p>Please contact support if this persists.</p>
-        </div>
-      `);
-    }
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) return res.status(404).send("<h1>Booking not found</h1>");
 
     booking.status = "Cancelled";
     await booking.save();
 
     res.send(`
       <div style="font-family: Arial; text-align: center; padding: 50px;">
-        <h1 style="color: #003366;">MGA CONNECT</h1>
-        <h2 style="color: #d9534f;">Booking Cancelled</h2>
-        <p>Your booking for <strong>${booking.name}</strong> has been cancelled successfully.</p>
+        <h1 style="color: #d9534f;">MGA CONNECT</h1>
+        <h2>Booking Cancelled Successfully</h2>
+        <p>Record for ${booking.name} has been updated.</p>
       </div>
     `);
   } catch (err) {
-    console.error("Cancel Route Error:", err.message);
-    res.status(500).send("Error processing cancellation. Please try again.");
+    res.status(500).send("Error processing cancellation");
   }
+});
+const PORT = process.env.PORT || 5001; 
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server is live and listening on port ${PORT}`);
 });
