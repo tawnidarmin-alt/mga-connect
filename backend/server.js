@@ -116,7 +116,6 @@ app.put("/update-booking/:id", async (req, res) => {
 });
 
 // 1. THE NOTIFICATION ROUTE
-// 1. THE NOTIFICATION ROUTE
 app.post("/notify-client/:id", async (req, res) => {
   try {
     const b = await Booking.findById(req.params.id);
@@ -127,12 +126,13 @@ app.post("/notify-client/:id", async (req, res) => {
     b.notificationDate = new Date();
     await b.save();
 
-    const displayId = b.bookingCode || b.bookingId || b._id.toString().slice(-6).toUpperCase();
+    const displayId = b.bookingCode || b._id.toString().slice(-6).toUpperCase();
     
     // THE FIX: Explicitly stringify the ID to ensure the URL is perfect
     const bookingIdString = b._id.toString();
     // CHANGE THIS LINE
-const cancelUrl = https://mga-connect.onrender.com/cancel/${b._id}
+// ✅ CORRECTED LINE:
+const cancelUrl = `https://mga-connect.onrender.com/cancel/${b._id}`;
 
     // Success to browser
     res.status(200).json({ success: true, message: "Notifications sent!" });
@@ -179,17 +179,18 @@ app.get("/cancel/:id", async (req, res) => {
 
     res.send(`
       <div style="font-family: Arial; text-align: center; padding: 50px;">
-        <h1 style="color: #d9534f;">MGA CONNECT</h1>
-        <h2>Booking Cancelled Successfully</h2>
-        <p>Record for ${booking.name} has been updated.</p>
+        <h1 style="color: #003366;">MGA CONNECT</h1>
+        <h2 style="color: #d9534f;">Booking Cancelled</h2>
+        <p>Success! The booking for <strong>${booking.name}</strong> has been cancelled.</p>
       </div>
     `);
   } catch (err) {
-    res.status(500).send("Error processing cancellation");
+    res.status(500).send("Server Error");
   }
 });
-const PORT = process.env.PORT || 5001; 
+const PORT = process.env.PORT || 5001;
 
+// Use '0.0.0.0' to allow Render to detect the open port
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server is live and listening on port ${PORT}`);
+  console.log(`🚀 Server is live on port ${PORT}`);
 });
