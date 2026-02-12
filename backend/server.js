@@ -2,58 +2,31 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const nodemailer = require("nodemailer");
 const twilio = require("twilio");
+const { Resend } = require('resend');
 
 const app = express();
+const PORT = process.env.PORT || 10000;
+
 app.use(express.json());
 app.use(cors());
 app.use(express.static('public'));
-// 1. Initialize Twilio Client
+
+// 1. Initialize Clients
 const twilioClient = new twilio(
   process.env.TWILIO_ACCOUNT_SID, 
   process.env.TWILIO_AUTH_TOKEN
 );
-
-// 2. Define the Twilio Number
-const TWILIO_WHATSAPP_NUMBER = process.env.TWILIO_NUMBER || "whatsapp:+14155238886";
-
-// 3. Initialize Nodemailer
-const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// --- 1. Database Connection ---
+// --- 2. Database Connection ---
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
-// --- 2. Booking Model ---
-const bookingSchema = new mongoose.Schema({
-  bookingId: String,
-  name: String,
-  email: String,
-  contactNumber: String,
-  flightNumber: String,
-  flightDate: String,
-  flightTime: String,
-  arrivalDeparture: String,   // Matches form
-  numberOfPassenger: Number,  // Matches form
-  passengerCategory: String,  // Matches form
-  corporateBankName: String,  // Matches form
-  serviceType: String,        // Matches form
-  numberOfLuggage: Number,    // Matches form
-  lounge: String,             // Matches form
-  transport: String,          // Matches form
-  hotel: String,              // Matches form
-  payment: String,            // Matches form
-  otherRequirement: String,   // Matches form
-  notified: { type: Boolean, default: false },
-  status: { type: String, default: "Active" }
-}, { timestamps: true });
-
 const Booking = require("./BookingModel"); 
 
-// --- 4. Routes ---
+// --- 3. Routes ---
 
 // Create Booking
 app.post("/bookings", async (req, res) => {
@@ -75,7 +48,6 @@ app.post("/bookings", async (req, res) => {
     const savedBooking = await newBooking.save();
     res.status(201).json(savedBooking);
   } catch (error) {
-    console.error("Error creating booking:", error);
     res.status(400).json({ message: error.message });
   }
 });
@@ -90,107 +62,115 @@ app.get("/bookings", async (req, res) => {
   }
 });
 
-// Update Booking
+// Update Booking (Internal Staff Updates)
 app.put("/update-booking/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    const updateData = req.body;
-
-    // The 'strict: false' tells MongoDB to save the data even if the schema is acting up
     const updatedBooking = await Booking.findByIdAndUpdate(
-      id,
-      { $set: updateData },
+      req.params.id,
+      { $set: req.body },
       { new: true, strict: false } 
     );
-
-    console.log("SUCCESS! Database now holds:", {
-      staffName: updatedBooking.staffName,
-      cardNo: updatedBooking.cardNo
-    });
-
     res.json(updatedBooking);
   } catch (err) {
-    console.error("Update Error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 });
 
-// 1. THE NOTIFICATION ROUTE
+// --- 4. THE NOTIFICATION ROUTE (FIXED) ---
 app.post("/notify-client/:id", async (req, res) => {
   try {
     const b = await Booking.findById(req.params.id);
     if (!b) return res.status(404).json({ error: "Booking not found" });
 
-    // Mark as notified for the Green Text
+    // 1. Mark as notified for Dashboard green text (DOES NOT CANCEL)
     b.notified = true;
     b.notificationDate = new Date();
-    await b.save();
+    await b.save(); 
 
     const displayId = b.bookingCode || b._id.toString().slice(-6).toUpperCase();
-    
-    // THE FIX: Explicitly stringify the ID to ensure the URL is perfect
-    const bookingIdString = b._id.toString();
-    // CHANGE THIS LINE
-// ✅ CORRECTED LINE:
-const cancelUrl = `https://mga-connect.onrender.com/cancel/${b._id}`;
+    const cancelUrl = `https://mga-connect.onrender.com/cancel/${b._id}`;
 
-    // Success to browser
-    res.status(200).json({ success: true, message: "Notifications sent!" });
-
-    // WhatsApp Message
-    const whatsappMsg = `*MGA CONNECT - BOOKING CONFIRMED* ✈️\n\nHello *${b.name}*,\nID: ${displayId}\nDate: ${b.flightDate}\nTime: ${b.flightTime}\nPax: ${b.numberOfPassenger}\n\n*Manage:* ${cancelUrl}`;
+    // 2. Send WhatsApp via Twilio
+    const whatsappMsg = `*MGA CONNECT - CONFIRMED* ✈️\n\nHello *${b.name}*,\nID: ${displayId}\nDate: ${b.flightDate || b.date}\nTime: ${b.flightTime || b.time}\n\n*Manage:* ${cancelUrl}`;
     
     twilioClient.messages.create({
-      from: process.env.TWILIO_WHATSAPP_NUMBER,
+      from: process.env.TWILIO_WHATSAPP_NUMBER || "whatsapp:+14155238886",
       to: `whatsapp:${b.contactNumber.startsWith('+') ? b.contactNumber : '+' + b.contactNumber}`,
       body: whatsappMsg,
     }).catch(err => console.error("WhatsApp Error:", err.message));
 
-    // Email Message
-    resend.emails.send({
+    // 3. Send Email via Resend
+    const { data, error } = await resend.emails.send({
       from: 'MGA Connect <onboarding@resend.dev>',
-      to: b.email,
+      to: [b.email],
       subject: `Booking Confirmation: ${displayId}`,
       html: `
-        <div style="font-family: Arial; padding: 20px; border: 1px solid #eee; max-width: 600px;">
+        <div style="font-family: Arial; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
           <h2 style="color: #003366;">MGA CONNECT - CONFIRMED ✈️</h2>
           <p>Hello <strong>${b.name}</strong>, your trip is booked!</p>
-          <p>🆔 ID: ${displayId}<br>📅 Date: ${b.flightDate}<br>🕒 Time: ${b.flightTime}<br>🔢 Pax: ${b.numberOfPassenger}</p>
-          <div style="margin: 20px 0;">
-            <a href="${cancelUrl}" style="background-color: #d9534f; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">Cancel Booking</a>
+          <div style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
+            <p>🆔 <strong>Booking ID:</strong> ${displayId}</p>
+            <p>📅 <strong>Date:</strong> ${b.flightDate || b.date}</p>
+            <p>⏰ <strong>Time:</strong> ${b.flightTime || b.time}</p>
           </div>
-          <p style="font-size: 10px; color: #999;">Link: ${cancelUrl}</p>
+          <br />
+          <a href="${cancelUrl}" style="background: #d9534f; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">Cancel Booking</a>
         </div>`
-    }).catch(err => console.error("Email Error:", err.message));
+    });
+
+    if (error) return res.status(400).json(error);
+    res.status(200).json({ message: "Notifications sent!", data });
 
   } catch (err) {
-    console.error("Notify Route Error:", err.message);
+    console.error("Notify Error:", err);
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
-// 2. THE CANCELLATION ROUTE
+// --- 5. CANCELLATION ROUTES (TWO-STEP) ---
+
+// Step 1: Confirmation Page (Safe for Bots)
 app.get("/cancel/:id", async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
     if (!booking) return res.status(404).send("<h1>Booking not found</h1>");
 
-    booking.status = "Cancelled";
-    await booking.save();
+    if (booking.status === "Cancelled") {
+      return res.send(`<h1>This booking is already cancelled.</h1>`);
+    }
 
     res.send(`
       <div style="font-family: Arial; text-align: center; padding: 50px;">
         <h1 style="color: #003366;">MGA CONNECT</h1>
-        <h2 style="color: #d9534f;">Booking Cancelled</h2>
-        <p>Success! The booking for <strong>${booking.name}</strong> has been cancelled.</p>
+        <h2>Confirm Cancellation</h2>
+        <p>Are you sure you want to cancel the booking for <strong>${booking.name}</strong>?</p>
+        <form action="/cancel-confirm/${req.params.id}" method="POST">
+          <button type="submit" style="background: #d9534f; color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            YES, CANCEL MY BOOKING
+          </button>
+        </form>
       </div>
     `);
   } catch (err) {
-    res.status(500).send("Server Error");
+    res.status(500).send("Error loading page");
   }
 });
-const PORT = process.env.PORT || 5001;
 
-// Use '0.0.0.0' to allow Render to detect the open port
+// Step 2: Final Database Update (Human only)
+app.post("/cancel-confirm/:id", async (req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id, 
+      { status: "Cancelled" },
+      { new: true }
+    );
+    res.send(`<h1>Cancelled Successfully</h1><p>Booking for ${booking.name} is updated.</p>`);
+  } catch (err) {
+    res.status(500).send("Error confirming cancellation");
+  }
+});
+
+// --- 6. Start Server ---
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server is live on port ${PORT}`);
 });
