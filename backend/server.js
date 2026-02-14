@@ -37,7 +37,7 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
 // Ensure your model file is named exactly BookingModel.js
-const Booking = require("./mga-connect/BookingModel"); 
+const Booking = require("./BookingModel");
 
 // --- 5. ROUTES ---
 
