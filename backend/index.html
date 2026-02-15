@@ -1,22 +1,68 @@
 <!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="MGA Connect frontend app"
-    />
-    <title>MGA Connect</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MGA Connect - Book Your Flight</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f7f6;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h1 {
+      color: #003366;
+      text-align: center;
+    }
+
+    input,
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #003366;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #002244;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>✈️ MGA Connect</h1>
+    <p>Enter your details to request a booking.</p>
+    <form id="bookingForm"> <input type="text" id="name" placeholder="Full Name" required> <input type="email"
+        id="email" placeholder="Email Address" required> <input type="date" id="flightDate" required> <button
+        type="submit">Confirm Booking</button> </form>
+    <p id="msg" style="text-align:center; color: green;"></p>
+  </div>
+
+</body>
+
 </html>
-
-
-
-
