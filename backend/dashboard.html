@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -95,10 +96,10 @@
             <tbody id="booking-table-body"></tbody>
         </table>
     </div>
-    <script>async function loadBookings() {
-            try {
-                const response = await fetch('/bookings'); const bookings = await response.json(); const tableBody = document.getElementById('booking-table-body'); document.getElementById('connection-status').innerText = "✅ Connected to Live Database"; tableBody.innerHTML = ''; bookings.forEach(b => {
-                    const isCancelled = b.status === 'Cancelled'; tableBody.innerHTML += \`` < tr >     <td><strong>${b.bookingCode || 'PENDING'}&lt;/strong&gt;&lt;/td&gt;`   `&lt;td&gt;${b.name}</td>     <td>${b.flightDate || b.date}&lt;/td&gt;`   `&lt;td&gt;&lt;span class=&quot;\${isCancelled ? &#39;badge-cancelled&#39; : &#39;&#39;}&quot;&gt;${b.status || 'Confirmed'}</span></td > <td>${\!isCancelled ? \`&lt;button class=&quot;btn&quot; onclick=&quot;sendNotification(&#39;\${b._id}&#39;)&quot;&gt;Send Alerts&lt;/button&gt;\` : '---'}&lt;/td&gt;`   `&lt;/tr&gt;\`;`   `});`   `} catch (err) {`   `document.getElementById('connection-status').innerText = "❌ Error connecting to server";`   `}`   `}`   `async function sendNotification(id) {`   `if (\!confirm("Send WhatsApp/Email?")) return;`   `await fetch(\`/notify-client/${id}`, { method: 'POST' });     alert("Sent!");     loadBookings();     }     loadBookings();     setInterval(loadBookings, 30000);     </script>
+  <script> async function loadBookings() { try { const response = await fetch('/bookings'); const bookings = await response.json(); const tableBody = document.getElementById('booking-table-body'); document.getElementById('connection-status').innerText = "✅ Connected to Live Database"; tableBody.innerHTML = '';
+
+</script>
+
 </body>
 
-</html>`
+</html>
