@@ -1,22 +1,25 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Booking from "./Booking";
 import Dashboard from "./Dashboard";
-import CancelBooking from "./CancelBooking";
+import CancelBooking from "./CancelBooking"; // 1. Added this import
 
 function App() {
   return (
     <Router>
-      {/* We removed the Navbar entirely. 
-        Now, the user only sees the component assigned to the URL they visit.
-      */}
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div className="container">
+          <Link className="navbar-brand" to="/">MGA Connect</Link>
+          <div className="navbar-nav">
+            <Link className="nav-link" to="/">Passenger Booking</Link>
+            <Link className="nav-link" to="/dashboard">Staff Dashboard</Link>
+          </div>
+        </div>
+      </nav>
+
       <Routes>
-        {/* URL: http://192.168.1.5:3000/ */}
         <Route path="/" element={<Booking />} />
-        
-        {/* URL: http://192.168.1.5:3000/dashboard */}
         <Route path="/dashboard" element={<Dashboard />} />
-        
-        {/* URL for cancellations via email links */}
+        {/* 2. Added the dynamic cancellation route */}
         <Route path="/cancel/:id" element={<CancelBooking />} />
       </Routes>
     </Router>

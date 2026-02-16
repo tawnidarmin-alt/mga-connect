@@ -21,7 +21,7 @@ const Booking = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("https://mga-connect.onrender.com/bookings", formData)
+    axios.post("http://192.168.1.5:5001/bookings", formData)
       .then(() => {
         setSubmitted(true); // Show success screen instead of reloading
       })

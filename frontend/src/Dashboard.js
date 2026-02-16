@@ -6,6 +6,7 @@ const EditableCell = ({ initialValue, onSave, disabled = false }) => {
   const [localValue, setLocalValue] = useState(initialValue);
   const [isSaving, setIsSaving] = useState(false);
 
+  // THIS FIXES THE BOOKINGSUMMARY ISSUE: 
   // It updates the cell if the database changes elsewhere
   useEffect(() => {
     setLocalValue(initialValue);
@@ -65,7 +66,7 @@ const Dashboard = () => {
   const [endDate, setEndDate] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
-  const API_BASE = "https://mga-connect.onrender.com";
+  const API_BASE = "http://192.168.1.5:5001";
 
   const fetchBookings = useCallback(async () => {
     try {
@@ -274,7 +275,7 @@ const Dashboard = () => {
           <tbody>
   {filteredBookings.map((b) => (
     <tr key={b._id} style={{ textAlign: "center", backgroundColor: b.status === "Cancelled" ? "#ffdce0" : "#e6ffed", borderBottom: "1px solid #eee" }}>
-     <td style={pStyle}>{b.bookingCode || b.bookingId || (b._id ? b._id.toString().slice(-6).toUpperCase() : "N/A")}</td>
+      <td style={pStyle}>{b.bookingId || "N/A"}</td>
       
       {/* Each cell below is now EITHER plain text (Locked) OR an Input (Unlocked) */}
       <td style={{ ...pStyle, minWidth: "150px" }}>
