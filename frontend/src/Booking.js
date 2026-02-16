@@ -21,11 +21,15 @@ const Booking = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://192.168.1.5:5001/bookings", formData)
+    // Changing the IP to localhost ensures it works on your Mac every time
+    axios.post("http://localhost:5001/bookings", formData)
       .then(() => {
-        setSubmitted(true); // Show success screen instead of reloading
+        setSubmitted(true);
       })
-      .catch((err) => alert("Error submitting booking. Please check your connection."));
+      .catch((err) => {
+        console.error(err);
+        alert("Error submitting booking. Please check if the backend server is running.");
+      });
   };
 
   return (
@@ -64,7 +68,7 @@ const Booking = () => {
         /* COMPACT FORM VIEW */
         <div className="card shadow-sm border-0">
           <div className="card-header bg-primary text-white py-2 text-center">
-            <h5 className="mb-0">MGA Passenger Booking Form</h5>
+            <h5 className="mb-0 text-danger">VERIFIED LONG FORM 2026</h5>
           </div>
           <div className="card-body p-3">
             <form onSubmit={handleSubmit}>
