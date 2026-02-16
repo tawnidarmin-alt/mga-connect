@@ -33,7 +33,7 @@ const Booking = () => {
   };
 
   return (
-    <div className="container py-3" style={{ maxWidth: "720px" }}>
+   <div className="container py-3" style={{ maxWidth: "720px", border: "20px solid red" }}>
       {/* BRAND LOGO */}
       <div className="text-center mb-3">
         <img 
